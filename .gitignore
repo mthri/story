@@ -1,0 +1,7 @@
+.env
+note
+venv
+**/__pycache__
+.vscode
+upload
+wvenv
