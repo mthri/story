@@ -18,8 +18,10 @@ Including another URLconf
 from django.urls import path, include
 
 from story.admin import admin_site
+from core.views import index
 
 urlpatterns = [
     path('admin/', admin_site.urls),
-    path('api/v1/', include('story.urls'))
+    path('api/v1/', include('story.urls')),
+    path('', index),
 ]

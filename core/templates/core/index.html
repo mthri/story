@@ -278,6 +278,24 @@
     </div>
   </div>
 
+  <!-- alert -->
+  <div class="modal fade" id="alertModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rtl">
+        <div class="modal-header">
+          <h5 class="modal-title" id="alertTitle"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="alertDescription">
+          
+        </div>
+        <div class="modal-footer float-right">
+          <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal">بستن</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   </main>
 
   <footer class="text-body-secondary py-5">
@@ -299,9 +317,9 @@
     document.addEventListener('alpine:init', () => {
         Alpine.data('app', () => ({
             api: {
-                sendStory: 'http://127.0.0.1:8000/api/v1/story',
-                storyList: 'http://127.0.0.1:8000/api/v1/story',
-                storyDetail: 'http://127.0.0.1:8000/api/v1/story/'
+                sendStory: "{% url 'story' %}",
+                storyList: "{% url 'story' %}",
+                storyDetail: "{% url 'story' %}"
             },
             posts: [],
             form: {
@@ -320,10 +338,10 @@
                 this.posts = this.posts.concat(data.results);
             },
             async loadStory(id) {
-                const response = await fetch(this.api.storyDetail + id);
+                const response = await fetch(this.api.storyDetail + '/' + id);
                 const data = await response.json();
-                document.getElementById("storyTitle").textContent = data.title;
-                document.getElementById("storyText").textContent = data.text;
+                document.getElementById('storyTitle').textContent = data.title;
+                document.getElementById('storyText').textContent = data.text;
                 showStoryModal();
             },
             async sendStory() {
@@ -337,23 +355,32 @@
                     },
                     body: JSON.stringify(this.form)
                 };
-                //TODO check response for error
-                try {
-                    const response = await fetch(this.api.sendStory, requestOptions);
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const data = await response.json();
-                } catch (error) {
-                    console.error('Fetch error:', error);
+
+                const response = await fetch(this.api.sendStory, requestOptions);
+                let data = await response.json();
+
+                if (!response.ok) {
+                  console.log(response)
+                  this.showAlert('ارسال ناموفق', JSON.stringify(data))
+                  closeAddStoryModal();
+                  return null;
                 }
+
                 this.form = {
                     title: null,
                     preview: null,
                     text: null
                 };
                 closeAddStoryModal();
+                let description = 'داستان شما پس از تایید در دسترس قرار خواهد گرفت.'
+                description += '\nکد پیگیری شما: ' + data.id
+                this.showAlert('باموفقیت ارسال شد', description)
                 await this.getPosts();
+            },
+            showAlert(title, text){
+              document.getElementById('alertTitle').textContent = title;
+              document.getElementById('alertDescription').textContent = text;
+              showAlertModal()
             },
         }));
     });
@@ -374,6 +401,11 @@
         };
         window.closeStoryModal = function() {
           modalShowStory.hide();
+        };
+
+        const modalAlert = new bootstrap.Modal('#alertModal');
+        window.showAlertModal = function() {
+          modalAlert.show();
         };
     });
 
