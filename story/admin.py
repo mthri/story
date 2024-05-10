@@ -28,7 +28,8 @@ class StoryAdmin(admin.ModelAdmin):
     actions = ('accept_action', )
     readonly_fields = (
         'user', 'id', 'slug', 'title', 
-        'preview', 'tags', 'text', 'view'
+        'preview', 'tags', 'text', 'view',
+        'created_at', 'modified_at', 
     )
 
     @admin.display(description='تایید')
