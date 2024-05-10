@@ -240,10 +240,10 @@
         </div>
   
         <div class="modal-body p-5 pt-0">
-          <form class="">
+          <div class="">
             <div class="form-floating mb-3">
               <input type="text" class="form-control rounded-3" id="title" max="50" x-model="form['title']" required>
-              <label for="floatingInput">عنوان</label>
+              <label for="floatingInput">* عنوان</label>
             </div>
             <div class="form-floating mb-3">
               <input type="text" class="form-control rounded-3" id="preview" maxlength="150" x-model="form['preview']">
@@ -251,10 +251,10 @@
             </div>
             <div class="form-floating mb-3">
               <textarea class="form-control rounded-3" id="text" style="height: 100px" x-model="form['text']" required></textarea>
-              <label for="preview">متن داستان</label>
+              <label for="preview">* متن داستان</label>
             </div>
             <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" @click="sendStory">ذخیره</button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
