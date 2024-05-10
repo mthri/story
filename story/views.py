@@ -35,7 +35,8 @@ class StoryListCreateView(generics.ListCreateAPIView):
         qs = (
             Story.objects.
             prefetch_related('tags').
-            filter(accept=True)
+            filter(accept=True).
+            order_by('-created_at')
         )
         return qs
 
