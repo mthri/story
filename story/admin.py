@@ -26,11 +26,17 @@ class StoryAdmin(admin.ModelAdmin):
     list_filter = ('accept', )
     list_display = ('title', 'view', 'accept', )
     actions = ('accept_action', )
-    readonly_fields = ('user', 'id', 'slug', )
+    readonly_fields = (
+        'user', 'id', 'slug', 'title', 
+        'preview', 'tags', 'text', 'view'
+    )
 
     @admin.display(description='تایید')
     def accept_action(self, request, obj):
         obj.update(accept=True)
+
+    def has_add_permission(self, request):
+        return False
 
 
 @admin.register(Tag, site=admin_site)
