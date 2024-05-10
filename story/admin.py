@@ -26,7 +26,7 @@ class StoryAdmin(admin.ModelAdmin):
     list_filter = ('accept', )
     list_display = ('title', 'view', 'accept', )
     actions = ('accept_action', )
-    readonly_fields = ('user', 'id')
+    readonly_fields = ('user', 'id', 'slug', )
 
     @admin.display(description='تایید')
     def accept_action(self, request, obj):
