@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  db:
+    image: postgres:14.9-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${PGDB_USER}
+      POSTGRES_PASSWORD: ${PGDB_PASS}
+      POSTGRES_DB: ${PGDB_NAME}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  
+  api:
+    build: .
+    container_name: api_app
+    entrypoint: ./docker-entrypoint.sh
+    env_file:
+      - .env
+    environment:
+      PGDB_HOST: db
+    volumes:
+      - ./staticfiles:/app/staticfiles
+    depends_on:
+      - db
+    
+  nginx:
+    image: nginx:alpine
+    container_name: webserver
+    ports:
+      - 8000:80
+    environment:
+      SERVER_ADDRESS: ${SERVER_ADDRESS}
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api
+
+  
