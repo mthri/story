@@ -245,14 +245,14 @@
               <label for="floatingInput">* عنوان</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control rounded-3" id="preview" maxlength="150" x-model="form['preview']">
+              <input type="text" class="form-control rounded-3" id="preview" maxlength="140" x-model="form['preview']">
               <label for="preview">خلاصه</label>
             </div>
             <div class="form-floating mb-3">
               <textarea class="form-control rounded-3" id="text" style="height: 100px" x-model="form['text']" required></textarea>
-              <label for="preview">* متن داستان</label>
+              <label for="text">* متن داستان</label>
             </div>
-            <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" @click="sendStory">ذخیره</button>
+            <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" x-bind:disabled="sendingInProgress" @click="sendStory">ذخیره</button>
           </div>
         </div>
       </div>
@@ -330,6 +330,7 @@
                 preview: null,
                 text: null
             },
+            sendingInProgress: false,
             async init() {
                 await this.getPosts();
             },
@@ -348,9 +349,11 @@
                 showStoryModal();
             },
             async sendStory() {
+                //TODO show error in null
                 if (this.form.title == null || this.form.text == null){
-                    return null
+                    return null;
                 }
+                this.sendingInProgress = true;
                 const requestOptions = {
                     method: 'POST',
                     headers: {
@@ -366,6 +369,7 @@
                   console.log(response)
                   this.showAlert('ارسال ناموفق', JSON.stringify(data))
                   closeAddStoryModal();
+                  this.sendingInProgress = false;
                   return null;
                 }
 
@@ -375,6 +379,7 @@
                     text: null
                 };
                 closeAddStoryModal();
+                this.sendingInProgress = false;
                 let description = 'داستان شما پس از تایید در دسترس قرار خواهد گرفت.'
                 description += '\nکد پیگیری شما: ' + data.id
                 this.showAlert('باموفقیت ارسال شد', description)
