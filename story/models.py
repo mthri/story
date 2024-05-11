@@ -40,7 +40,9 @@ class Story(BaseModel):
         if not self.id:
             self.id = shortuuid.ShortUUID().random(length=7)
             if not self.preview:
-                self.preview = self.text[:150]
+                self.preview = self.text[:140]
+            #fix too long value for preview
+            self.preview = self.preview[:140]
             self.preview += ' ...'
             self.slug = slugify(self.title)
         
