@@ -16,6 +16,9 @@ ALLOWED_HOSTS = ['*', ] if DEBUG else config('ALLOWED_HOSTS', cast=Csv())
 MAIN_HOST = 'http://127.0.0.1:8000' if DEBUG else config('MAIN_HOST')
 
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
