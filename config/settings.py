@@ -13,6 +13,9 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['*', ] if DEBUG else config('ALLOWED_HOSTS', cast=Csv())
 
 
+MAIN_HOST = 'http://127.0.0.1:8000' if DEBUG else config('MAIN_HOST', cast=Csv())
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -123,3 +126,16 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
+
+
+# Telegram Config
+SEND_NOTIFICATION = config('SEND_NOTIFICATION', cast=bool, default=False)
+
+if SEND_NOTIFICATION:
+    TLG_BOT = config('TLG_BOT')
+    TLG_ADMIN_CHANNEL_ID = config('TLG_ADMIN_CHANNEL_ID')
+
+    if DEBUG:
+        TLG_PUBLIC_CHANNEL_ID = TLG_ADMIN_CHANNEL_ID
+    else:
+        TLG_PUBLIC_CHANNEL_ID = config('TLG_PUBLIC_CHANNEL_ID')

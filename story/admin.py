@@ -22,7 +22,7 @@ class NewUserAdmin(UserAdmin):
 
 @admin.register(Story, site=admin_site)
 class StoryAdmin(admin.ModelAdmin):
-    search_fields = ('text', )
+    search_fields = ('text', 'id', )
     list_filter = ('accept', )
     list_display = ('title', 'view', 'accept', )
     actions = ('accept_action', )
@@ -38,6 +38,14 @@ class StoryAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+    
+    def save_model(self, request, obj, form, change):
+        update_fields = []
+        if change: 
+            if form.initial['accept'] != form.cleaned_data['accept']:
+                update_fields.append('accept')
+
+        obj.save(update_fields=update_fields)
 
 
 @admin.register(Tag, site=admin_site)

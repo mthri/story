@@ -7,3 +7,4 @@ django-cors-headers
 python-decouple
 shortuuid
 psycopg2-binary
+requests
