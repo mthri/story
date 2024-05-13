@@ -1,5 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
+
+from story.models import Story
 
 
-def index(request, *args, **kwargs):
-    return render(request, 'core/index.html')
+def home_page(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+    try:
+        story = Story.objects.get(pk=pk, accept=True)
+    except Story.DoesNotExist:
+        return redirect(reverse('home-page'))
+
+    return render(request, 'core/index.html', context={'pk': pk})

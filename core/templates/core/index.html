@@ -270,7 +270,7 @@
         <div class="modal-body">
           <p id="storyText"></p>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer flex-row-reverse">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
         </div>
       </div>
@@ -278,7 +278,7 @@
   </div>
 
   <!-- alert -->
-  <div class="modal fade" id="alertModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal fade" id="alertModal" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rtl">
         <div class="modal-header">
@@ -288,8 +288,8 @@
         <div class="modal-body" id="alertDescription">
           
         </div>
-        <div class="modal-footer float-right">
-          <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal">بستن</button>
+        <div class="modal-footer flex-row-reverse">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
         </div>
       </div>
     </div>
@@ -333,6 +333,7 @@
             sendingInProgress: false,
             async init() {
                 await this.getPosts();
+                {% if pk %}await this.loadStory("{{pk}}"){% endif %};
             },
             async getPosts() {
                 const response = await fetch(this.api.storyList);

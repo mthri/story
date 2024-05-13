@@ -6,10 +6,12 @@ from .models import Tag, Story
 class GeneralStorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
-        fields = ('id', 'title', 'text', 'preview', 'created_at', 'tags')
+        fields = ('id', 'title', 'text', 'preview', 'url',
+                  'created_at', 'tags')
         read_only_fields = ('id', 'created_at')
         extra_kwargs = {
-            'text': {'write_only': True}
+            'text': {'write_only': True},
+            'url': {'read_only': True},
         }
 
 

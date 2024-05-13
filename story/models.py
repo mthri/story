@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.urls import reverse
 
 import shortuuid
 
@@ -44,6 +45,7 @@ class Story(BaseModel):
             #fix too long value for preview
             self.preview = self.preview[:140]
             self.preview += ' ...'
+            #TODO not works :|
             self.slug = slugify(self.title)
         
 
@@ -51,3 +53,7 @@ class Story(BaseModel):
 
     def __str__(self) -> str:
         return self.title
+    
+    @property
+    def url(self):
+        return reverse('story-page', args=(self.id, ))
