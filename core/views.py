@@ -7,7 +7,8 @@ from story.models import Story
 def home_page(request, *args, **kwargs):
     pk = kwargs.get('pk')
     try:
-        story = Story.objects.get(pk=pk, accept=True)
+        if pk:
+            story = Story.objects.get(pk=pk, accept=True)
     except Story.DoesNotExist:
         return redirect(reverse('home-page'))
 
