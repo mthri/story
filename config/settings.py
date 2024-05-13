@@ -13,7 +13,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['*', ] if DEBUG else config('ALLOWED_HOSTS', cast=Csv())
 
 
-MAIN_HOST = 'http://127.0.0.1:8000' if DEBUG else config('MAIN_HOST', cast=Csv())
+MAIN_HOST = 'http://127.0.0.1:8000' if DEBUG else config('MAIN_HOST')
 
 
 INSTALLED_APPS = [
@@ -139,3 +139,23 @@ if SEND_NOTIFICATION:
         TLG_PUBLIC_CHANNEL_ID = TLG_ADMIN_CHANNEL_ID
     else:
         TLG_PUBLIC_CHANNEL_ID = config('TLG_PUBLIC_CHANNEL_ID')
+
+
+
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers':['console'],
+            'propagate': True,
+            'level':'DEBUG',
+        }
+    },
+}
