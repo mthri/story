@@ -19,6 +19,9 @@ MAIN_HOST = 'http://127.0.0.1:8000' if DEBUG else config('MAIN_HOST')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
+ADMIN_URL = config('ADMIN_URL', default='admin/')
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
